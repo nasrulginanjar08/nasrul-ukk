@@ -19,7 +19,7 @@ if(mysqli_num_rows($query)>0){
     }
 }else{
     echo"<script>
-    alert('Maaf Login Gagal, Silakan Ulangi Lagi');
+    alert('Login Gagal, Username atau Password Salah');
     window.location.assign('index.php');
     </script>";
 }

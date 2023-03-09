@@ -16,6 +16,6 @@ if(mysqli_num_rows($query)>0){
 }else{
     echo"<script>
     alert('Maaf Anda Gagal Login, Silakan Ulangi');
-    window.Location.assign('index.php');
+    window.Location.assign('login-siswa.php');
     </script>";
 }

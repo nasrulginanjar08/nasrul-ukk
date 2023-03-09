@@ -3,13 +3,13 @@
 session_start();
 if(empty($_SESSION['id_petugas'])){
     echo"<script>
-    alert('Maaf Anda belum Login');
+    alert('Sesi Anda Telah Berakhir, Silakan Login Kembali');
     window.location.assign('../index.php');
     </script>";
 }
 if($_SESSION['level']!='Admin'){
     echo"<script>
-    alert('Maaf Anda belum Anda bukan Sesi Admin');
+    alert('Maaf Anda bukan Sesi Admin');
     window.location.assign('../index.php');
     </script>";
 }
