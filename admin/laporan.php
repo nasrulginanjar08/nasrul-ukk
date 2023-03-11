@@ -1,3 +1,9 @@
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.1.3/css/bootstrap.css" />
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.10.19/css/dataTables.bootstrap4.min.css" />
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <script src="https://cdn.datatables.net/1.10.19/js/jquery.dataTables.min.js"></script>
+    <script src="https://cdn.datatables.net/1.10.19/js/dataTables.bootstrap4.min.js"></script>
 <?php 
  include'../koneksi.php';
  ?>
@@ -6,11 +12,6 @@
 <a href="cetak-laporan.php" class="btn btn-primary"> Cetak Laporan </a></br>
 <hr>
 
-<form action="laporan.php" method="get">
-    <label>Cari :</label>
-    <input type="text" name="cari">
-    <input type="submit" value="Cari">
-</form>
  
 <?php 
 if(isset($_GET['cari'])){
@@ -19,7 +20,8 @@ if(isset($_GET['cari'])){
 }
 ?>
 
-<table class="table table-striped table-bordered">
+<table class="table table-striped table-bordered" id="tabel-data">
+    <thead>
     <tr class="fw-bold">
         <td>No</td>
         <td>NISN</td>
@@ -32,20 +34,21 @@ if(isset($_GET['cari'])){
         <td>Petugas</td>
         
     </tr>
+    </thead>
 
     <?php
-    if(isset($_GET['cari'])){
+    if(isset($_GET['form-cari'])){
         $cari = $_GET['cari'];
-        $data = mysqli_query($koneksi, "SELECT*FROM pembayaran WHERE nisn LIKE '%".$cari."%'");             
+        $sql = "SELECT * FROM pembayaran,siswa,kelas,spp,petugas WHERE pembayaran.nisn=siswa.nisn AND siswa.id_kelas=kelas.id_kelas AND pembayaran.id_spp=spp.id_spp AND pembayaran.id_petugas=petugas.id_petugas AND siswa.nisn like '%".$cari."%' OR siswa.nama like '%".$cari."%'";   
+        $no = 1;        
     }else{
-        $data = mysqli_query($koneksi, "SELECT*FROM pembayaran");       
-    }
         $no = 1;
         $sql = "SELECT*FROM pembayaran,siswa,kelas,spp,petugas WHERE pembayaran.nisn=siswa.nisn AND siswa.id_kelas=kelas.id_kelas AND pembayaran.id_spp=spp.id_spp AND pembayaran.id_petugas=petugas.id_petugas ORDER BY tgl_bayar DESC";
+    }
         $query = mysqli_query($koneksi, $sql);
         foreach ($query as $data ){            
             ?>
-
+            <tbody>
             <tr>
                 <td><?php echo $no++; ?></td>
                 <td><?php echo $data['nisn'] ?></td>
@@ -58,6 +61,12 @@ if(isset($_GET['cari'])){
                 <td><?php echo $data['nama_petugas'] ?></td>
               
             </tr>
-            
+            </tbody>
       <?php } ?>
+        <script>
+            $(document).ready(function(){
+                $('#tabel-data').DataTable();
+            });
+        </script>
 </table>
+
